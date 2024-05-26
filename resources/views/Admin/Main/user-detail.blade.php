@@ -108,10 +108,10 @@
                                     <th class="pt-0">Odenis Tipi <select id="FilterpaymentType" class="form-select">
                                             <option value="0">Hepsi</option>
                                             <option value="1">Nagd</option>
-                                            <option value="2">Kredit Karti</option>
+                                            <option value="2">Kart</option>
                                         </select></th>
                                     <th class="pt-0">Satis Tarixi <input name="filterDate" type="date"
-                                            class="form-control" placeholder="Satis Tarixi"></th>
+                                            class="form-control" onclick="openDateTime(this)" placeholder="Satis Tarixi"></th>
                                 </tr>
                             </thead>
                         </table>
@@ -155,40 +155,40 @@
                         {
                             data: 'cardno',
                             name: 'cardno',
-                            searchable: false
-                            orderable: false
+                            searchable: false,
+                            orderable: false,
                         },
                         {
                             data: 'store',
                             name: 'store',
-                            searchable: false
+                            searchable: false,
                             orderable: false
                         },
                         {
                             data: 'cashier',
                             name: 'cashier',
-                            searchable: false
+                            searchable: false,
                         },
                         {
                             data: 'total',
                             name: 'total',
-                            searchable: false
+                            searchable: false,
                         },
                         {
                             data: 'bonus',
                             name: 'bonus',
-                            searchable: false
+                            searchable: false,
                         },
                         {
                             data: 'payment_type',
                             name: 'payment_type',
                             searchable: false,
-                            orderable: false
+                            orderable: false,
                         },
                         {
                             data: 'sale_date',
                             name: 'sale_date',
-                            searchable: false
+                            searchable: false,
                         },
                     ],
                     order: [
@@ -204,6 +204,9 @@
                     autoWidth: false,
                 });
             });
+            function openDateTime(element) {
+                $(element).showPicker();
+            }
         });
     </script>
 @endsection
