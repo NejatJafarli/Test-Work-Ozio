@@ -52,6 +52,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'adminauth'], function () {
     Route::get('/datatable/task-one', [AjaxDataTableController::class, 'datatableTaskOne'])->name('datatableTaskOne');
     Route::get('/task-one', [AdminMainController::class, 'taskOne'])->name('taskOne');
     Route::get('/dashboard', [AdminMainController::class, 'dashboard'])->name('adminDashboard');
-
+    
     Route::get('/logout', [AdminAuthController::class, 'logout'])->name('adminLogout');
+
+    Route::group(['prefix' => 'user'], function () {
+        //user detail /userid
+        Route::get('/{id}', [AdminMainController::class, 'userDetail'])->name('userDetail');
+        // datatableUserReceiptsHistory
+        Route::get('/datatable/user-receipts-history', [AjaxDataTableController::class, 'datatableUserReceiptsHistory'])->name('datatableUserReceiptsHistory');
+    });
 });

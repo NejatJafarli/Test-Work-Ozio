@@ -20,12 +20,12 @@ class AjaxDataTableController extends Controller
             if (!empty($filters['store']) && $filters['store'] != '0') {
                 $query->where('store_code', $filters['store']);
             }
-            
+
             // Date filter
             if (!empty($filters['startDate']) && !empty($filters['endDate'])) {
                 $query->whereBetween('sale_date', [$filters['startDate'], $filters['endDate']]);
             }
-        
+
             // Bonus card numbers
             if ($filters['filterChoice'] !== null) {
                 $cards = bonus::pluck('cardno')->toArray();
@@ -51,7 +51,7 @@ class AjaxDataTableController extends Controller
                 return $row->cardno;
             })
             //add store column
-            ->addColumn('store', function ($row) use ($filters){
+            ->addColumn('store', function ($row) use ($filters) {
                 if ($filters['filterChoice'] == '1') {
                     return "Not Found";
                 }
@@ -60,12 +60,13 @@ class AjaxDataTableController extends Controller
                 }
                 return '';
             })
-            ->addColumn('user_name', function ($row)  use ($filters){
+            ->addColumn('user_name', function ($row)  use ($filters) {
                 if ($filters['filterChoice'] == '1') {
-                    return $row->name;
+                    return '<a href="' . route('userDetail', $row->id) . '">' . $row->name . '</a>';
                 }
                 if ($row->user) {
-                    return $row->user->name;
+                    //use route userDetail
+                    return '<a href="' . route('userDetail', $row->user->id) . '">' . $row->user->name . '</a>';
                 }
                 return '';
             })
@@ -78,14 +79,24 @@ class AjaxDataTableController extends Controller
                 }
                 return '';
             })
-            ->addColumn('date', function ($row)  {
+            ->addColumn('date', function ($row) {
                 if ($row->sale_date) {
                     return $row->sale_date;
                 }
                 return "";
             })
+            ->rawColumns(['user_name'])
             ->make(true);
 
         return $data;
+    }
+    public function datatableUserReceiptsHistory(Request $request)
+    {
+        $query= sale_receipts::with(['store'])->where('cardno', $request->cardno);
+
+        if ($request->has('filters')) {
+            // Date filter
+          
+        }
     }
 }
