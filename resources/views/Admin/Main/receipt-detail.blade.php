@@ -106,7 +106,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-11">
-                            <h6 class="card-title mb-0">Istifadeci Kecmisi</h6>
+                            <h6 class="card-title mb-0">Alinan Mehsullar</h6>
                         </div>
                     </div>
                     <div class="table-responsive">
