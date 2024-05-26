@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\bonus;
+use App\Models\sale_receipt_items;
 use App\Models\sale_receipts;
 use App\Models\user;
 use Illuminate\Http\Request;
@@ -41,7 +42,13 @@ class AjaxDataTableController extends Controller
         }
 
         $data = DataTables::of($query)
-            ->addIndexColumn()
+            ->addColumn('id', function ($row)  use ($filters) {
+                if ($filters['filterChoice'] == '0') {
+                    return '<a href="' . route('receiptDetail', $row->id) . '">' . $row->id . '</a>';
+                } else {
+                    return $row->id;
+                }
+            })
             //columns card no user name and user phone
             ->addColumn('cardno', function ($row) use ($filters) {
                 if ($filters['filterChoice'] == '1') {
@@ -85,7 +92,7 @@ class AjaxDataTableController extends Controller
                 }
                 return "";
             })
-            ->rawColumns(['user_name'])
+            ->rawColumns(['id', 'user_name'])
             ->make(true);
 
         return $data;
@@ -156,7 +163,9 @@ class AjaxDataTableController extends Controller
         }
 
         $data = DataTables::of($query)
-            ->addIndexColumn()
+            ->addColumn('id', function ($row)  use ($filters) {
+                return '<a href="' . route('receiptDetail', $row->id) . '">' . $row->id . '</a>';
+            })
             ->addColumn('store', function ($row) {
                 if ($row->store) {
                     return $row->store->name;
@@ -174,16 +183,39 @@ class AjaxDataTableController extends Controller
             })
             ->addColumn('payment_type', function ($row) {
                 if ($row->cash_payment > 0) {
-                    return 'Nakit';
+                    return 'Negd';
                 } else if ($row->credit_card_payment > 0) {
-                    return 'Kredi Kartı';
+                    return 'Kart';
                 }
                 return '';
             })
             ->addColumn('sale_date', function ($row) {
                 return $row->sale_date;
             })
+            ->rawColumns(['id'])
             ->make(true);
+        return $data;
+    }
+    public function datatableReceiptItems(Request $request)
+    {
+        $query = sale_receipt_items::where('receipt_id', $request->filters['receipt_id']);
+
+        $data = DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('product_name', function ($row) {
+                return $row->product_name;
+            })
+            ->addColumn('quantity', function ($row) {
+                return $row->quantity;
+            })
+            ->addColumn('unit_price', function ($row) {
+                return $row->price;
+            })
+            ->addColumn('total_price', function ($row) {
+                return $row->quantity * $row->price . ' Azn';
+            })
+            ->make(true);
+
         return $data;
     }
 }

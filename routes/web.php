@@ -55,6 +55,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'adminauth'], function () {
     
     Route::get('/logout', [AdminAuthController::class, 'logout'])->name('adminLogout');
 
+    Route::group(['prefix' => 'receipt'], function () {
+        //detail
+        Route::get('/{id}', [AdminMainController::class, 'receiptDetail'])->name('receiptDetail');
+        //datatable
+        Route::get('/datatable/receipt-items', [AjaxDataTableController::class, 'datatableReceiptItems'])->name('datatableReceiptItems');
+    });
     Route::group(['prefix' => 'user'], function () {
         //user detail /userid
         Route::get('/{id}', [AdminMainController::class, 'userDetail'])->name('userDetail');

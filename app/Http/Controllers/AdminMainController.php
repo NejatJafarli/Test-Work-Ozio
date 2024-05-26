@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\sale_receipts;
 use App\Models\stores;
 use App\Models\user;
 use Illuminate\Http\Request;
@@ -39,4 +40,17 @@ class AdminMainController extends Controller
         ];
         return view('Admin/Main/user-detail', $data);
     }
+    // receiptDetail
+    public function receiptDetail($id)
+    {
+        $receipt = sale_receipts::with(['user', 'store'])->find($id);
+        if (!$receipt) {
+            return redirect()->back()->withErrors('Fiş bulunamadı');
+        }
+        $data = [
+            'receipt' => $receipt
+        ];
+        return view('Admin/Main/receipt-detail', $data);
+    }
+    
 }

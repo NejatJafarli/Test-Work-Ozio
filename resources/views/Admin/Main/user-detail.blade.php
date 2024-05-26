@@ -63,16 +63,16 @@
                         <div class="col-6 col-md-12 col-xl-5">
                             <h5 class="mb-2">Ad Soyad: {{ $user->name }}</h5>
                             <h5 class="mb-2">Email: {{ $user->email }}</h5>
-                            <h5 class="mb-2">Telefon: {{ $user->country_code . ' ' . $user->phone }}</h5>
-                            <h5 class="mb-2">Dogum Tarixi: {{ $user->birth_date }}</h5>
+                            <h5 class="mb-2">Telefon: {{  $user->user_phone }}</h5>
+                            <h5 class="mb-2">Dogum Tarixi: {{ $user->birthday }}</h5>
                             <h5 class="mb-2">Cinsiyyet:
                                 @if ($user->gender == 1)
                                     <span class="badge bg-primary">Kisi</span>
                                 @elseif($user->gender == 2)
-                                    <span class="badge bg-pink">Qadin</span>
+                                    <span style="background-color: pink;" class="badge bg-primary">Qadin</span>
                                 @endif
                             </h5>
-                            <h5 class="mb-2">Referal Kodu: {{ $user->referal_code }}</h5>
+                            <h5 class="mb-2">Referal Kodu: {{ $user->referral_code }}</h5>
                             <h5 class="mb-2">Bonus Kart No: {{ $user->bonus_card_no }}</h5>
                         </div>
                     </div>
@@ -84,7 +84,8 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-11">
-                            <h6 class="card-title mb-0">Istifadeci Kecmisi</h6>
+                            <h6 class="card-title mb-0">Istifadeci Kecmisi (Input doldurduqdan sonra Enter basip Search ede
+                                bilersiz)</h6>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -111,7 +112,8 @@
                                             <option value="2">Kart</option>
                                         </select></th>
                                     <th class="pt-0">Satis Tarixi <input name="filterDate" type="date"
-                                            class="form-control" onclick="openDateTime(this)" placeholder="Satis Tarixi"></th>
+                                            class="form-control" onclick="openDateTime(this)" placeholder="Satis Tarixi">
+                                    </th>
                                 </tr>
                             </thead>
                         </table>
@@ -202,8 +204,22 @@
                     ordering: true,
                     info: true,
                     autoWidth: false,
+                    initComplete: function() {
+                        this.api().columns().every(function() {
+                            var that = this;
+                            $('input', this.header()).on('change clear',
+                                function() {
+                                    that.search(this.value).draw();
+                                });
+                            $('select', this.header()).on('change',
+                                function() {
+                                    that.search(this.value).draw();
+                                });
+                        });
+                    }
                 });
             });
+
             function openDateTime(element) {
                 $(element).showPicker();
             }

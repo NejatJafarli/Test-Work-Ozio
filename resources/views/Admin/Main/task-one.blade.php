@@ -1,5 +1,10 @@
 @extends('layout/master')
 @section('header')
+<style>
+    .row{
+        margin-right: 0px !important;
+    }
+    </style>
 @endsection
 @section('content')
     <div class="row flex-grow-1">
@@ -49,12 +54,12 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-11">
+                        <div class="col-12">
                             <h6 class="card-title mb-0">Datas</h6>
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table id="MyDataTable" class="table table-hover mb-0">
+                        <table id="MyDataTable" class="table table-hover">
                             <thead>
                                 <tr>
                                     <th class="pt-0">#</th>
@@ -70,6 +75,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 @endsection
 
@@ -92,7 +98,7 @@
                     ajax: {
                         url: "{{ route('datatableTaskOne') }}",
                         data: function(d) {
-                            d.filters={};
+                            d.filters = {};
                             d.filters.startDate = $('#startDateFilter').val();
                             d.filters.endDate = $('#endDateFilter').val();
                             d.filters.store = $('#storeFilter').val();
